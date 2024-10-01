@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:misteria/util/shadow.dart';
 import 'package:misteria/widgets/container_tela.dart';
+import 'package:misteria/widgets/input.dart';
 import 'package:misteria/widgets/tema.dart';
 
 class HomePage extends StatelessWidget {
@@ -36,12 +37,31 @@ class HomePage extends StatelessWidget {
             Container(
               width: largura,
               margin: const EdgeInsets.only(bottom: 12),
-              child: TextField(
-                controller: nickController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  labelText: "Nick",
-                ),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Text("NICK NAME"),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Image.asset(
+                            "lib/assets/images/usuario.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Input(
+                        controller: nickController,
+                        width: double.maxFinite,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             ElevatedButton(
