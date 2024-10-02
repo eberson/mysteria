@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:misteria/util/shadow.dart';
+import 'package:misteria/widgets/botao.dart';
 import 'package:misteria/widgets/container_tela.dart';
 import 'package:misteria/widgets/input.dart';
 import 'package:misteria/widgets/tema.dart';
+import 'package:misteria/widgets/texto_sublinhado.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+
     const logo = "lib/assets/images/mysteria.png";
     const faixa = "lib/assets/images/faixa_destaque.png";
 
@@ -36,14 +40,16 @@ class HomePage extends StatelessWidget {
             ),
             Container(
               width: largura,
-              margin: const EdgeInsets.only(bottom: 12),
+              margin: const EdgeInsets.only(bottom: 30),
               child: Column(
                 children: [
                   Column(
                     children: [
                       Row(
                         children: [
-                          const Text("NICK NAME"),
+                          const TextoSublinhado(
+                            content: "NICK NAME",
+                          ),
                           const SizedBox(
                             width: 5,
                           ),
@@ -64,9 +70,23 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text("Entrar"),
+            SizedBox(
+              width: largura * 0.6,
+              child: Botao(
+                onPress: () {},
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextoSublinhado(
+                      content: "ENTRAR",
+                    ),
+                    Icon(
+                      Icons.play_arrow,
+                      color: Color.fromARGB(255, 183, 6, 6),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

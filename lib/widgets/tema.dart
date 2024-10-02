@@ -6,6 +6,8 @@ const bg = Color.fromARGB(200, 0, 0, 0);
 const shadow = Color.fromARGB(255, 0, 0, 0);
 const bodyShadow = Color.fromARGB(255, 35, 35, 35);
 
+const baseFontSize = 20.0;
+
 ThemeData temaAtual() {
   return ThemeData(
     colorScheme: ColorScheme.fromSeed(
@@ -15,49 +17,49 @@ ThemeData temaAtual() {
     ),
     textTheme: TextTheme(
       headlineLarge: GoogleFonts.julee().copyWith(
-        fontSize: 57,
+        fontSize: baseFontSize,
       ),
       headlineMedium: GoogleFonts.julee().copyWith(
-        fontSize: 50,
+        fontSize: baseFontSize,
       ),
       headlineSmall: GoogleFonts.julee().copyWith(
-        fontSize: 43,
+        fontSize: baseFontSize,
       ),
       titleLarge: GoogleFonts.julee().copyWith(
-        fontSize: 39,
+        fontSize: baseFontSize,
       ),
       titleMedium: GoogleFonts.julee().copyWith(
-        fontSize: 28,
+        fontSize: baseFontSize,
       ),
       titleSmall: GoogleFonts.julee().copyWith(
-        fontSize: 25,
+        fontSize: baseFontSize,
       ),
       bodyLarge: GoogleFonts.julee().copyWith(
-        fontSize: 28,
+        fontSize: baseFontSize,
       ),
       bodyMedium: GoogleFonts.julee().copyWith(
-        fontSize: 25,
+        fontSize: baseFontSize,
       ),
       bodySmall: GoogleFonts.julee().copyWith(
-        fontSize: 21,
+        fontSize: baseFontSize,
       ),
       displayLarge: GoogleFonts.julee().copyWith(
-        fontSize: 102,
+        fontSize: baseFontSize,
       ),
       displayMedium: GoogleFonts.julee().copyWith(
-        fontSize: 80,
+        fontSize: baseFontSize,
       ),
       displaySmall: GoogleFonts.julee().copyWith(
-        fontSize: 64,
+        fontSize: baseFontSize,
       ),
       labelLarge: GoogleFonts.julee().copyWith(
-        fontSize: 28,
+        fontSize: baseFontSize,
       ),
       labelMedium: GoogleFonts.julee().copyWith(
-        fontSize: 28,
+        fontSize: baseFontSize,
       ),
       labelSmall: GoogleFonts.julee().copyWith(
-        fontSize: 28,
+        fontSize: baseFontSize,
       ),
     ),
   );
