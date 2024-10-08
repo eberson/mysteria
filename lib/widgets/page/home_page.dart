@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:misteria/util/shadow.dart';
-import 'package:misteria/widgets/botao.dart';
-import 'package:misteria/widgets/container_tela.dart';
-import 'package:misteria/widgets/input.dart';
-import 'package:misteria/widgets/tema.dart';
-import 'package:misteria/widgets/texto_sublinhado.dart';
+import 'package:mysteria/util/shadow.dart';
+import 'package:mysteria/vm/jogador_vm.dart';
+import 'package:mysteria/widgets/botao.dart';
+import 'package:mysteria/widgets/container_tela.dart';
+import 'package:mysteria/widgets/input.dart';
+import 'package:mysteria/widgets/label.dart';
+import 'package:mysteria/widgets/tema.dart';
+import 'package:mysteria/widgets/texto_sublinhado.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final tema = Theme.of(context);
-
     const logo = "lib/assets/images/mysteria.png";
     const faixa = "lib/assets/images/faixa_destaque.png";
 
@@ -45,20 +46,9 @@ class HomePage extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          const TextoSublinhado(
-                            content: "NICK NAME",
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Image.asset(
-                            "lib/assets/images/usuario.png",
-                            width: 24,
-                            height: 24,
-                          ),
-                        ],
+                      const Label(
+                        "NICK NAME",
+                        imageAsset: "lib/assets/images/usuario.png",
                       ),
                       const SizedBox(height: 10),
                       Input(
@@ -73,7 +63,9 @@ class HomePage extends StatelessWidget {
             SizedBox(
               width: largura * 0.6,
               child: Botao(
-                onPress: () {},
+                onPress: () {
+                  _entrar(context, nickController.text);
+                },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -108,4 +100,15 @@ class HomePage extends StatelessWidget {
           fit: BoxFit.fitWidth,
         ),
       );
+
+  void _entrar(BuildContext context, String? nome) {
+    final jogadorVM = Provider.of<JogadorViewModel>(
+      context,
+      listen: false,
+    );
+
+    jogadorVM.createJogador(nome);
+
+    Navigator.pushNamed(context, "/partidas");
+  }
 }

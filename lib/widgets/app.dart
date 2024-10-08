@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:misteria/widgets/page/home_page.dart';
-import 'package:misteria/widgets/tema.dart';
+import 'package:mysteria/widgets/page/home_page.dart';
+import 'package:mysteria/widgets/page/partidas_page.dart';
+import 'package:mysteria/widgets/tema.dart';
 
 class Aplicacao extends StatelessWidget {
   const Aplicacao({super.key});
@@ -10,8 +11,12 @@ class Aplicacao extends StatelessWidget {
     return MaterialApp(
       title: "mysterIA",
       theme: temaAtual(),
-      home: const HomePage(),
       debugShowCheckedModeBanner: false,
+      initialRoute: "/",
+      routes: {
+        "/": (_) => const HomePage(),
+        "/partidas": (_) => const PartidasPage(),
+      },
     );
   }
 }

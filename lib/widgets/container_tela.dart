@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:misteria/util/shadow.dart';
-import 'package:misteria/widgets/tema.dart';
+import 'package:mysteria/util/shadow.dart';
+import 'package:mysteria/widgets/tema.dart';
 
 class ContainerTela extends StatelessWidget {
   final Widget child;

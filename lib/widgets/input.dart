@@ -16,7 +16,6 @@ class Input extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: 20,
         right: 10,
-        bottom: 25,
       ),
       width: width,
       height: 40,
@@ -25,14 +24,11 @@ class Input extends StatelessWidget {
         boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(255, 137, 4, 4),
-            blurRadius: 5,
-            spreadRadius: 5,
           ),
           BoxShadow(
             color: Color.fromARGB(255, 183, 6, 6),
-            offset: Offset(5, -5),
-            blurRadius: 2,
-            spreadRadius: 1,
+            offset: Offset(-4, 4),
+            blurRadius: 6,
           ),
         ],
       ),
