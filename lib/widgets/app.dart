@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysteria/widgets/page/home_page.dart';
+import 'package:mysteria/widgets/page/lobby_page.dart';
 import 'package:mysteria/widgets/page/partidas_page.dart';
 import 'package:mysteria/widgets/tema.dart';
 
@@ -16,6 +17,7 @@ class Aplicacao extends StatelessWidget {
       routes: {
         "/": (_) => const HomePage(),
         "/partidas": (_) => const PartidasPage(),
+        "/lobby": (_) => const LobbyPage(),
       },
     );
   }

@@ -4,9 +4,9 @@ class TextoSublinhado extends StatelessWidget {
   final String content;
   final TextStyle? style;
 
-  const TextoSublinhado({
+  const TextoSublinhado(
+    this.content, {
     super.key,
-    required this.content,
     this.style,
   });
 
@@ -17,6 +17,7 @@ class TextoSublinhado extends StatelessWidget {
 
     return Text(
       content,
+      textAlign: TextAlign.center,
       style: currentStyle?.copyWith(
         decoration: TextDecoration.underline,
       ),

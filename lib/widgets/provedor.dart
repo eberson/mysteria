@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysteria/vm/jogador_vm.dart';
+import 'package:mysteria/vm/partida_list_vm.dart';
+import 'package:mysteria/vm/partida_vm.dart';
 import 'package:mysteria/widgets/app.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +13,8 @@ class Provedor extends StatelessWidget {
     return MultiProvider(
       providers: [
         JogadorViewModel.create(),
+        PartidaListViewModel.create(),
+        PartidaViewModel.create(),
       ],
       child: const Aplicacao(),
     );

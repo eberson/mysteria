@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class Botao extends StatelessWidget {
   final Widget child;
   final VoidCallback onPress;
+  final EdgeInsets padding;
 
   const Botao({
     super.key,
     required this.child,
     required this.onPress,
+    this.padding = const EdgeInsets.all(12),
   });
 
   @override
@@ -17,7 +19,7 @@ class Botao extends StatelessWidget {
       child: GestureDetector(
         onTap: onPress,
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: padding,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11),

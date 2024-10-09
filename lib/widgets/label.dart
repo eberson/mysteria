@@ -9,19 +9,13 @@ class Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final children = <Widget>[];
-
-    children.add(TextoSublinhado(content: text));
-
     if (imageAsset == null) {
-      return TextoSublinhado(content: text);
+      return TextoSublinhado(text);
     }
 
     return Row(
       children: [
-        TextoSublinhado(
-          content: text,
-        ),
+        TextoSublinhado(text),
         const SizedBox(
           width: 5,
         ),

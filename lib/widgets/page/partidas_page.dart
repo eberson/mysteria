@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mysteria/entidade/partida.dart';
+import 'package:mysteria/util/space.dart';
+import 'package:mysteria/vm/partida_list_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
-import 'package:mysteria/widgets/container_tela.dart';
+import 'package:mysteria/widgets/container_sombreado.dart';
+import 'package:mysteria/widgets/headline.dart';
+import 'package:mysteria/widgets/partida_item.dart';
+import 'package:mysteria/widgets/stack_container.dart';
 import 'package:mysteria/widgets/texto_sublinhado.dart';
+import 'package:provider/provider.dart';
 
 class PartidasPage extends StatelessWidget {
   const PartidasPage({super.key});
@@ -9,29 +16,24 @@ class PartidasPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tema = Theme.of(context);
+    final partidasListVM = Provider.of<PartidaListViewModel>(context);
+
+    final partidas = partidasListVM.partidas;
 
     return Scaffold(
-      body: ContainerTela(
+      body: StackContainer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              margin: const EdgeInsets.only(top: 30, bottom: 15),
-              child: TextoSublinhado(
-                content: "PARTIDAS",
-                style: tema.textTheme.headlineMedium,
-              ),
+            const Headline("PARTIDAS"),
+            Expanded(
+              child: partidas.isNotEmpty ? listaPartidas(partidas) : empty(),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                bottom: 30,
-                left: 12,
-                right: 12,
-                top: 12,
-              ),
+              padding: Space.stayBottom,
               child: Botao(
-                child: const TextoSublinhado(content: "ATUALIZAR"),
-                onPress: () {},
+                onPress: partidasListVM.refresh,
+                child: const TextoSublinhado("ATUALIZAR"),
               ),
             ),
           ],
@@ -39,4 +41,24 @@ class PartidasPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget listaPartidas(List<Partida> partidas) => ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: partidas.length,
+        itemBuilder: (context, index) => PartidaItem(partidas[index]),
+      );
+
+  Widget empty() => const Center(
+        child: SizedBox(
+          width: 250,
+          height: 210,
+          child: ContainerSombreado(
+            child: Center(
+              child: TextoSublinhado(
+                "NÃO EXISTEM PARTIDAS ABERTAS!",
+              ),
+            ),
+          ),
+        ),
+      );
 }

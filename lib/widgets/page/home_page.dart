@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysteria/util/images.dart';
 import 'package:mysteria/util/shadow.dart';
 import 'package:mysteria/vm/jogador_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
@@ -14,9 +15,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const logo = "lib/assets/images/mysteria.png";
-    const faixa = "lib/assets/images/faixa_destaque.png";
-
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
@@ -31,11 +29,11 @@ class HomePage extends StatelessWidget {
       body: ContainerTela(
         child: Column(
           children: [
-            Image.asset(faixa),
+            Image.asset(Images.faixaDestaque),
             SizedBox(
               height: logoSpace,
             ),
-            _logo(logo, largura),
+            _logo(Images.mysteriaLogo, largura),
             SizedBox(
               height: mainSpace,
             ),
@@ -69,9 +67,7 @@ class HomePage extends StatelessWidget {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextoSublinhado(
-                      content: "ENTRAR",
-                    ),
+                    TextoSublinhado("ENTRAR"),
                     Icon(
                       Icons.play_arrow,
                       color: Color.fromARGB(255, 183, 6, 6),
