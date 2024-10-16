@@ -34,6 +34,5 @@ class ContainerSombreado extends StatelessWidget {
       ),
       child: child,
     );
-    ;
   }
 }

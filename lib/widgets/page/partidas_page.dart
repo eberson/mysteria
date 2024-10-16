@@ -14,8 +14,7 @@ class PartidasPage extends StatelessWidget {
   const PartidasPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final tema = Theme.of(context);
+  Widget build(BuildContext context) {    
     final partidasListVM = Provider.of<PartidaListViewModel>(context);
 
     final partidas = partidasListVM.partidas;

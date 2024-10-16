@@ -75,9 +75,24 @@ class LobbyPage extends StatelessWidget {
             ),
             Padding(
               padding: Space.stayBottom,
-              child: Botao(
-                onPress: () => Navigator.pop(context),
-                child: const TextoSublinhado("Voltar"),
+              child: Column(
+                children: [
+                  Botao(
+                    onPress: () => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      "/loading",
+                      (route) => route.settings.name == "/",
+                    ),
+                    child: const TextoSublinhado("Loading"),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Botao(
+                    onPress: () => Navigator.pop(context),
+                    child: const TextoSublinhado("Voltar"),
+                  ),
+                ],
               ),
             ),
           ],
