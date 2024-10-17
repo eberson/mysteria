@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mysteria/util/location.dart';
 
+//https://github.com/vijayinyoutube/radar_animation.git
+
 class RadarBoundary {
-  final Point topLeft;
-  final Point topRight;
-  final Point bottomLeft;
-  final Point bottomRight;
+  final LatLng topLeft;
+  final LatLng topRight;
+  final LatLng bottomLeft;
+  final LatLng bottomRight;
 
   RadarBoundary(
     this.topLeft,
@@ -14,7 +17,7 @@ class RadarBoundary {
     this.bottomLeft,
   );
 
-  List<Point> get allPoints => <Point>[
+  List<LatLng> get allPoints => <LatLng>[
         topLeft,
         topRight,
         bottomRight,
@@ -69,7 +72,7 @@ class _RadarState extends State<Radar> {
 
 class RadarController {
   final RadarBoundary boundary;
-  final ValueNotifier<List<Point>> points = ValueNotifier(<Point>[]);
+  final ValueNotifier<List<LatLng>> points = ValueNotifier(<LatLng>[]);
 
   late double boardSize;
 
@@ -79,13 +82,13 @@ class RadarController {
     return RadarController(boundary: boundary);
   }
 
-  void getLocationInBoard(Point point) {
+  void getLocationInBoard(LatLng point) {
     _findNearestCorner(point);
   }
 
-  Point _findNearestCorner(Point point) {
+  LatLng _findNearestCorner(LatLng point) {
     double distance = 0.0;
-    Point? corner;
+    LatLng? corner;
 
     final allCorners = boundary.allPoints;
 
