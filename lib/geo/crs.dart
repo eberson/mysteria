@@ -71,7 +71,6 @@ abstract class Crs {
 
 /// Internal base class for CRS with a single zoom-level independent transformation.
 @immutable
-@internal
 abstract class CrsWithStaticTransformation extends Crs {
   @nonVirtual
   @protected
