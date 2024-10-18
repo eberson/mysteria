@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mysteria/util/images.dart';
+import 'package:mysteria/util/ints.dart';
 import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
 import 'package:mysteria/widgets/radar.dart';
@@ -61,7 +62,7 @@ class _GamePageState extends State<GamePage> {
                     );
 
                     return Text(
-                      "${toClockPart(d.inMinutes)}:${toClockPart(d.inSeconds)}",
+                      "${d.inMinutes.toClockPart()}:${d.inSeconds.toClockPart()}",
                       style: textStyle,
                     );
                   },
@@ -121,7 +122,4 @@ class _GamePageState extends State<GamePage> {
       ),
     );
   }
-
-  String toClockPart(int value) =>
-      value.remainder(60).toString().padLeft(2, "0");
 }

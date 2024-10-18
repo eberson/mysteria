@@ -4,7 +4,7 @@ class Space {
   Space._();
 
   static EdgeInsets get stayBottom => const EdgeInsets.only(
-        bottom: 30,
+        bottom: 20,
         left: 12,
         right: 12,
         top: 12,

@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mysteria/entidade/partida.dart';
+import 'package:mysteria/entidade/partida_resumida.dart';
+import 'package:mysteria/vm/jogador_vm.dart';
+import 'package:mysteria/vm/model/message.dart';
 import 'package:mysteria/vm/partida_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
 import 'package:mysteria/widgets/container_sombreado.dart';
@@ -8,7 +12,7 @@ import 'package:mysteria/widgets/texto_sublinhado.dart';
 import 'package:provider/provider.dart';
 
 class PartidaItem extends StatelessWidget {
-  final Partida partida;
+  final PartidaResumida partida;
 
   const PartidaItem(this.partida, {super.key});
 
@@ -28,7 +32,7 @@ class PartidaItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextoSublinhado(partida.name.toUpperCase()),
+                  TextoSublinhado(partida.titulo.toUpperCase()),
                   SizedBox(
                     width: 48,
                     height: 28,
@@ -67,14 +71,51 @@ class PartidaItem extends StatelessWidget {
     );
   }
 
-  void entraPartida(BuildContext context) {
+  Future<void> entraPartida(BuildContext context) async {
     if (!partida.disponivel) {
       return;
     }
 
-    final vm = Provider.of<PartidaViewModel>(context, listen: false);
-    vm.setPartida(partida);
+    try {
+      final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
 
-    Navigator.pushNamed(context, "/lobby");
+      final message = await jogadorVM.adicionarNaPartida(partida);
+
+      // ignore: use_build_context_synchronously
+      await onSuccess(context, message);
+    } catch (e) {
+      if (context.mounted) {
+        final messenger = ScaffoldMessenger.of(context);
+
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> onSuccess(BuildContext context, Message message) async {
+    if (message.error) {
+      if (context.mounted) {
+        final messenger = ScaffoldMessenger.of(context);
+
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(message.message),
+          ),
+        );
+      }
+
+      return;
+    }
+
+    final partidaVM = Provider.of<PartidaViewModel>(context, listen: false);
+    await partidaVM.setPartida(partida.id);
+
+    if (context.mounted) {
+      Navigator.pushNamed(context, "/lobby");
+    }
   }
 }

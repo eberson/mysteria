@@ -1,43 +1,22 @@
 import 'package:flutter/foundation.dart';
-import 'package:mysteria/entidade/partida.dart';
+import 'package:mysteria/api/rest_client.dart';
+import 'package:mysteria/entidade/partida_resumida.dart';
 import 'package:mysteria/entidade/status_partida.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-
-const _uuid = Uuid();
 
 class PartidaListViewModel extends ChangeNotifier {
-  List<Partida> _partidas = <Partida>[];
+  List<PartidaResumida> _partidas = <PartidaResumida>[];
 
   void refresh() {
-    _partidas = <Partida>[
-      Partida(
-        id: _uuid.v7(),
-        name: "Partida 1",
-        status: StatusPartida.aguardando,
-        maxJogadores: 10,
-        countJogadores: 5,
-      ),
-      Partida(
-        id: _uuid.v7(),
-        name: "Partida 2",
-        status: StatusPartida.andamento,
-        maxJogadores: 10,
-        countJogadores: 10,
-      ),
-      Partida(
-        id: _uuid.v7(),
-        name: "Partida 3",
-        status: StatusPartida.aguardando,
-        maxJogadores: 10,
-        countJogadores: 4,
-      ),
-    ];
-
-    notifyListeners();
+    RestClient.instance
+        .listaPartidasPorStatus(StatusPartida.aguardando)
+        .then((items) {
+      _partidas = items;
+      notifyListeners();
+    });
   }
 
-  List<Partida> get partidas => _partidas;
+  List<PartidaResumida> get partidas => _partidas;
 
   static ChangeNotifierProvider<PartidaListViewModel> create() =>
       ChangeNotifierProvider(

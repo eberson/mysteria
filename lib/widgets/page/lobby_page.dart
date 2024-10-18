@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mysteria/entidade/status_partida.dart';
 import 'package:mysteria/util/space.dart';
 import 'package:mysteria/vm/partida_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
@@ -9,8 +13,50 @@ import 'package:mysteria/widgets/stack_container.dart';
 import 'package:mysteria/widgets/texto_sublinhado.dart';
 import 'package:provider/provider.dart';
 
-class LobbyPage extends StatelessWidget {
+class LobbyPage extends StatefulWidget {
   const LobbyPage({super.key});
+
+  @override
+  State<LobbyPage> createState() => _LobbyPageState();
+}
+
+class _LobbyPageState extends State<LobbyPage> {
+  late Timer? _timer;
+
+  @override
+  void initState() {
+    _timer = Timer.periodic(const Duration(seconds: 2), (_) async {
+      try {
+        final vm = Provider.of<PartidaViewModel>(context, listen: false);
+        await vm.refresh();
+
+        if (vm.partida != null) {
+          if (vm.partida!.status == StatusPartida.aguardando &&
+              vm.partida!.salaCheia) {
+            try {
+              await vm.iniciaPartida();
+              goToLoading();
+            } catch (e) {
+              showError(e);
+            }
+          } else if (vm.partida!.status == StatusPartida.andamento) {
+            goToLoading();
+          }
+        }
+      } catch (e) {
+        showError(e);
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +77,19 @@ class LobbyPage extends StatelessWidget {
             const Headline("LOBBY"),
             Padding(
               padding: const EdgeInsets.only(
-                top: 30,
-                bottom: 30,
+                top: 16,
+                bottom: 16,
                 left: 25,
                 right: 25,
               ),
               child: ContainerSombreado(
                 child: Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(12),
                   height: containerHeight,
                   child: Column(
                     children: [
                       Text(
-                        "Jogadores: ${partida.countJogadores} / ${partida.maxJogadores}",
+                        "Jogadores: ${partida?.countJogadores ?? 0} / ${partida?.maxJogadores ?? 0}",
                         style: GoogleFonts.jaldi(
                           fontSize: 16,
                         ),
@@ -55,12 +101,15 @@ class LobbyPage extends StatelessWidget {
                         child: ListView.builder(
                           itemCount: jogadores.length,
                           itemBuilder: (context, index) => Container(
-                            margin: const EdgeInsets.only(bottom: 25),
+                            margin: const EdgeInsets.only(bottom: 18),
                             child: TextoSublinhado(
                               "JOGADOR(A): ${jogadores[index].nome.toUpperCase()}",
                             ),
                           ),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 12,
                       ),
                       Text(
                         "Aguardando Jogadores...",
@@ -78,17 +127,6 @@ class LobbyPage extends StatelessWidget {
               child: Column(
                 children: [
                   Botao(
-                    onPress: () => Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      "/loading",
-                      (route) => route.settings.name == "/",
-                    ),
-                    child: const TextoSublinhado("Loading"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Botao(
                     onPress: () => Navigator.pop(context),
                     child: const TextoSublinhado("Voltar"),
                   ),
@@ -99,5 +137,25 @@ class LobbyPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showError(dynamic e) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e),
+        ),
+      );
+    });
+  }
+
+  void goToLoading() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        "/loading",
+        (route) => route.settings.name == "/",
+      );
+    });
   }
 }

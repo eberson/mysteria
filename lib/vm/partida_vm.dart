@@ -1,32 +1,50 @@
 import 'package:flutter/foundation.dart';
+import 'package:mysteria/api/request/iniciar_partida.dart';
+import 'package:mysteria/api/rest_client.dart';
 import 'package:mysteria/entidade/jogador.dart';
 import 'package:mysteria/entidade/partida.dart';
+import 'package:mysteria/entidade/status_partida.dart';
 import 'package:provider/provider.dart';
 
 class PartidaViewModel extends ChangeNotifier {
-  late Partida _partida;
-  List<Jogador> _jogadores = [];
+  Partida? _partida;
 
-  void setPartida(Partida partida) {
-    _partida = partida;
+  Future<void> refresh() async {
+    if (_partida == null) {
+      return;
+    }
 
-    carregaJogadores();
+    _partida = await RestClient.instance.getPartida(_partida!.id);
 
-    notifyListeners();
-  }
+    if (_partida == null) {
+      notifyListeners();
+      return;
+    }
 
-  void carregaJogadores() {
-    _jogadores = <Jogador>[
-      Jogador.comNome("Clara"),
-      Jogador.comNome("João"),
-      Jogador.comNome("Aline"),
-    ];
+    
 
     notifyListeners();
   }
 
-  Partida get partida => _partida;
-  List<Jogador> get jogadores => _jogadores;
+  Future<void> iniciaPartida() async {
+    if (_partida == null) {
+      return;
+    }
+
+    try {
+      await RestClient.instance.iniciarPartida(IniciarPartida(_partida!.id));
+    } catch (e) {
+      Future.error(e.toString());
+    }
+  }
+
+  Future<void> setPartida(String partida) async {
+    _partida = await RestClient.instance.getPartida(partida);
+    notifyListeners();
+  }
+
+  Partida? get partida => _partida;
+  List<Jogador> get jogadores => _partida?.jogadores ?? [];
 
   static ChangeNotifierProvider<PartidaViewModel> create() =>
       ChangeNotifierProvider(

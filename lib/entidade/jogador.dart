@@ -1,12 +1,17 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:mysteria/util/ints.dart';
 import 'package:uuid/uuid.dart';
+
+part 'jogador.g.dart';
 
 const _uuid = Uuid();
 
+@JsonSerializable()
 class Jogador {
   final String id;
   final String nome;
 
-  Jogador._({
+  Jogador({
     required this.id,
     required this.nome,
   });
@@ -16,13 +21,21 @@ class Jogador {
       return Jogador.comNomePadrao();
     }
 
-    return Jogador._(id: _uuid.v7(), nome: nome);
+    return Jogador(id: _uuid.v7(), nome: nome);
   }
 
   factory Jogador.comNomePadrao() {
-    return Jogador._(
+    final now = DateTime.now();
+
+    return Jogador(
       id: _uuid.v7(),
-      nome: "Jogador ${DateTime.now().millisecondsSinceEpoch}",
+      nome:
+          "Jogador ${now.second.toDigitCount(2)}${now.millisecond.toDigitCount(3)}",
     );
   }
+
+  factory Jogador.fromJson(Map<String, dynamic> json) =>
+      _$JogadorFromJson(json);
+
+  Map<String, dynamic> toJson() => _$JogadorToJson(this);
 }
