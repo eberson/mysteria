@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/vm/jogador_vm.dart';
 import 'package:mysteria/vm/partida_list_vm.dart';
 import 'package:mysteria/vm/partida_vm.dart';
@@ -17,6 +18,7 @@ class Provedor extends StatelessWidget {
         PartidaListViewModel.create(),
         PartidaViewModel.create(),
         PontoInteresseViewModel.create(),
+        GameViewModel.create(),
       ],
       child: const Aplicacao(),
     );

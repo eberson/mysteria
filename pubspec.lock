@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  badges:
+    dependency: "direct main"
+    description:
+      name: badges
+      sha256: a7b6bbd60dce418df0db3058b53f9d083c22cdb5132a052145dc267494df0b84
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -429,6 +437,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  timer_count_down:
+    dependency: "direct main"
+    description:
+      name: timer_count_down
+      sha256: d025d408c2654e497ca0bd4bde014bd7509d4c6397af4ed23a0f9b692bbcf337
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
   typed_data:
     dependency: transitive
     description:
