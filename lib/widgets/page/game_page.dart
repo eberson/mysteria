@@ -1,16 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:mysteria/geo/bounds.dart';
-import 'package:mysteria/geo/projection.dart';
 import 'package:mysteria/util/images.dart';
-import 'package:mysteria/geo/location.dart';
 import 'package:mysteria/widgets/radar.dart';
 import 'package:mysteria/widgets/stack_container.dart';
-
-import 'package:proj4dart/proj4dart.dart' as proj4;
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
