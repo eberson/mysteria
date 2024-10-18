@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:mysteria/geo/locator.dart';
 import 'package:mysteria/util/images.dart';
 import 'package:mysteria/util/shadow.dart';
 import 'package:mysteria/vm/jogador_vm.dart';
+import 'package:mysteria/vm/pontos_interesse_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
 import 'package:mysteria/widgets/container_tela.dart';
 import 'package:mysteria/widgets/input.dart';
@@ -10,8 +14,55 @@ import 'package:mysteria/widgets/tema.dart';
 import 'package:mysteria/widgets/texto_sublinhado.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool _podeEntrar = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      determinePosition().then((value) {
+        final vm = Provider.of<PontoInteresseViewModel>(
+          context,
+          listen: false,
+        );
+
+        vm.setUserLocation(LatLng(value.latitude, value.longitude));
+
+        setState(() {
+          _podeEntrar = true;
+        });
+      }).catchError((e) {
+        final messenger = ScaffoldMessenger.of(context);
+
+        messenger.showSnackBar(
+          SnackBar(
+            content: Column(
+              children: [
+                const Text("Você não poderá entrar no jogo."),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(e),
+              ],
+            ),
+          ),
+        );
+
+        setState(() {
+          _podeEntrar = false;
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +149,10 @@ class HomePage extends StatelessWidget {
       );
 
   void _entrar(BuildContext context, String? nome) {
+    if (!_podeEntrar) {
+      return;
+    }
+
     final jogadorVM = Provider.of<JogadorViewModel>(
       context,
       listen: false,
