@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:mysteria/entidade/partida.dart';
 import 'package:mysteria/entidade/partida_resumida.dart';
 import 'package:mysteria/util/space.dart';
 import 'package:mysteria/vm/jogador_vm.dart';

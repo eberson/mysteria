@@ -3,7 +3,6 @@ import 'package:mysteria/api/request/iniciar_partida.dart';
 import 'package:mysteria/api/rest_client.dart';
 import 'package:mysteria/entidade/jogador.dart';
 import 'package:mysteria/entidade/partida.dart';
-import 'package:mysteria/entidade/status_partida.dart';
 import 'package:provider/provider.dart';
 
 class PartidaViewModel extends ChangeNotifier {
