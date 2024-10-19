@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _podeEntrar = false;
+  final nickController = TextEditingController();
 
   @override
   void initState() {
@@ -74,60 +75,60 @@ class _HomePageState extends State<HomePage> {
     final logoSpace = height * 0.08;
     final mainSpace = height * 0.15;
 
-    final nickController = TextEditingController();
-
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: ContainerTela(
-        child: Column(
-          children: [
-            Image.asset(Images.faixaDestaque),
-            SizedBox(
-              height: logoSpace,
-            ),
-            _logo(Images.mysteriaLogo, largura),
-            SizedBox(
-              height: mainSpace,
-            ),
-            Container(
-              width: largura,
-              margin: const EdgeInsets.only(bottom: 30),
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      const Label(
-                        "NICK NAME",
-                        imageAsset: "lib/assets/images/usuario.png",
-                      ),
-                      const SizedBox(height: 10),
-                      Input(
-                        controller: nickController,
-                        width: double.maxFinite,
-                      ),
-                    ],
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Image.asset(Images.faixaDestaque),
+              SizedBox(
+                height: logoSpace,
               ),
-            ),
-            SizedBox(
-              width: largura * 0.6,
-              child: Botao(
-                onPress: () {
-                  _entrar(context, nickController.text);
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              _logo(Images.mysteriaLogo, largura),
+              SizedBox(
+                height: mainSpace,
+              ),
+              Container(
+                width: largura,
+                margin: const EdgeInsets.only(bottom: 30),
+                child: Column(
                   children: [
-                    TextoSublinhado("ENTRAR"),
-                    Icon(
-                      Icons.play_arrow,
-                      color: Color.fromARGB(255, 183, 6, 6),
+                    Column(
+                      children: [
+                        const Label(
+                          "NICK NAME",
+                          imageAsset: "lib/assets/images/usuario.png",
+                        ),
+                        const SizedBox(height: 10),
+                        Input(
+                          controller: nickController,
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                width: largura * 0.6,
+                child: Botao(
+                  onPress: () {
+                    _entrar(context, nickController.text);
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextoSublinhado("ENTRAR"),
+                      Icon(
+                        Icons.play_arrow,
+                        color: Color.fromARGB(255, 183, 6, 6),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
