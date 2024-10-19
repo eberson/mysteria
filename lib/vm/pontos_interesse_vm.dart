@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mysteria/entidade/charada.dart';
 import 'package:mysteria/geo/location.dart';
 import 'package:provider/provider.dart';
 
 class PontoInteresseViewModel extends ChangeNotifier {
   late LatLng? _jogador;
-  List<LatLng> _locais = [];
-  List<LatLng> _proximos = [];
+  final Map<LatLng, Charada> _charadas = {};
+  final List<LatLng> _proximos = [];
 
   void setUserLocation(LatLng point) {
     _jogador = point;
@@ -14,8 +15,14 @@ class PontoInteresseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setLocais(List<LatLng> locais) {
-    _locais = locais;
+  void start(List<Charada> dicas) {
+    _charadas.clear();
+
+    for (var dica in dicas) {
+      final coord = LatLng(dica.latitude, dica.longitude);
+      _charadas[coord] = dica;
+    }
+
     onMove();
     notifyListeners();
   }
@@ -25,13 +32,16 @@ class PontoInteresseViewModel extends ChangeNotifier {
       return;
     }
 
-    _proximos = _locais
-        .where((l) => getDistanceFromLatLonInMeters(_jogador!, l) < 15)
-        .toList();
+    _proximos.clear();
+    _proximos.addAll(
+      _charadas.keys
+          .where((l) => getDistanceFromLatLonInMeters(_jogador!, l) < 15)
+          .toList(),
+    );
   }
 
   void reset() {
-    _locais.clear();
+    _charadas.clear();
     _proximos.clear();
   }
 
