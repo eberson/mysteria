@@ -23,7 +23,7 @@ abstract class RestClient {
   Future<Partida> getPartida(@Path('id') String id);
 
   @GET('/partida/{id}/status')
-  Future<StatusPartida> getStatusPartida(@Path('id') String id);
+  Future<String> getStatusPartida(@Path('id') String id);
 
   @POST('/partida/adicionar-jogador')
   Future<String> adicionarJogador(@Body() AdicionarJogador request);
@@ -39,6 +39,7 @@ abstract class RestClient {
 
   @PUT('/partida/adivinha')
   Future<String> adivinhar(@Body() AdivinhaRequest request);
+ 
 
   static RestClient? _instance;
   static RestClient get instance {

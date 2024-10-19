@@ -111,7 +111,7 @@ class PartidaItem extends StatelessWidget {
     await partidaVM.setPartida(partida.id);
 
     if (context.mounted) {
-      Navigator.pushNamed(context, "/loading");
+      Navigator.pushNamed(context, "/lobby");
     }
   }
 }

@@ -92,12 +92,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<StatusPartida> getStatusPartida(String id) async {
+  Future<String> getStatusPartida(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<StatusPartida>(Options(
+    final _options = _setStreamType<String>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -113,15 +113,10 @@ class _RestClient implements RestClient {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late StatusPartida _value;
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
     try {
-      _value = StatusPartida.values.firstWhere(
-        (e) => e.name == _result.data,
-        orElse: () => throw ArgumentError(
-          'StatusPartida does not contain value ${_result.data}',
-        ),
-      );
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

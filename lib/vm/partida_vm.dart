@@ -3,6 +3,7 @@ import 'package:mysteria/api/request/iniciar_partida.dart';
 import 'package:mysteria/api/rest_client.dart';
 import 'package:mysteria/entidade/jogador.dart';
 import 'package:mysteria/entidade/partida.dart';
+import 'package:mysteria/entidade/status_partida.dart';
 import 'package:provider/provider.dart';
 
 class PartidaViewModel extends ChangeNotifier {
@@ -21,6 +22,21 @@ class PartidaViewModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<bool> partidaFinalizada() async {
+    if (_partida == null) {
+      return false;
+    }
+
+    try {
+      var status = await RestClient.instance.getStatusPartida(_partida!.id);
+      status = status.replaceAll(RegExp(r'"+'), "");
+
+      return status == StatusPartida.finalizada.description;
+    } catch (e) {
+      return Future.error("Erro ao capturar o status da partida");
+    }
   }
 
   Future<void> iniciaPartida() async {

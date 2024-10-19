@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -40,6 +41,15 @@ class _GamePageState extends State<GamePage> {
           Providers.pontoInteresseVM(ctx).setUserLocation(
             LatLng(position.latitude, position.longitude),
           );
+
+          try {
+            if (await Providers.partidaVM(ctx).partidaFinalizada()) {
+              goToGameOver();
+            }
+          } catch (e) {
+            log("Error: $e");
+            goToGameOver();
+          }
         }
       } catch (e) {
         showError(e);
@@ -66,8 +76,6 @@ class _GamePageState extends State<GamePage> {
     final screenSize = MediaQuery.of(context).size;
     final titleSize = screenSize.width - 40;
     final dicaViewWidth = (screenSize.width - 40) / 2;
-
-    final radarSize = screenSize.width - 60;
 
     final gameVM = Provider.of<GameViewModel>(context);
     final dicasPersonagem = gameVM.partida?.dicasPersonagem ?? [];
@@ -109,11 +117,7 @@ class _GamePageState extends State<GamePage> {
                         style: textStyle,
                       );
                     },
-                    onFinished: () => Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      "/game-over",
-                      (route) => route.settings.name == "/",
-                    ),
+                    onFinished: () => goToGameOver(),
                   ),
                 ],
               ),
@@ -192,11 +196,21 @@ class _GamePageState extends State<GamePage> {
 
   void showError(dynamic e) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e),
+          ),
+        );
+      }
     });
   }
+
+  void goToGameOver() => SchedulerBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/game-over",
+          (route) => route.settings.name == "/",
+        );
+      });
 }
