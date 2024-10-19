@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:mysteria/entidade/partida.dart';
 import 'package:mysteria/util/images.dart';
 import 'package:mysteria/vm/local_vm.dart';
