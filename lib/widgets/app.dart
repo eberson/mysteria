@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysteria/widgets/page/dicas_page.dart';
 import 'package:mysteria/widgets/page/game_over_page.dart';
 import 'package:mysteria/widgets/page/game_page.dart';
+import 'package:mysteria/widgets/page/game_won_page.dart';
 import 'package:mysteria/widgets/page/home_page.dart';
 import 'package:mysteria/widgets/page/loading_page.dart';
 import 'package:mysteria/widgets/page/lobby_page.dart';
@@ -28,6 +29,7 @@ class Aplicacao extends StatelessWidget {
         "/mystery": (_) => const MysteryPage(),
         "/dicas": (_) => const DicasPage(),
         "/game-over": (_) => const GameOverPage(),
+        "/game-won": (_) => const GameWonPage(),
       },
     );
   }

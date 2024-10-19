@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysteria/util/animations.dart';
 import 'package:mysteria/util/images.dart';
+import 'package:mysteria/util/providers.dart';
 import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/vm/local_vm.dart';
 import 'package:mysteria/vm/objeto_vm.dart';
@@ -57,6 +58,18 @@ class LoadingPage extends StatelessWidget {
     return (Duration _) async {
       final partidaVM = Provider.of<PartidaViewModel>(context, listen: false);
 
+      if (partidaVM.partida == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Ocorreu um erro interno. Saindo da partida.",
+            ),
+          ),
+        );
+
+        Navigator.pop(context);
+      }
+
       final personagemVM = Provider.of<PersonagemViewModel>(
         context,
         listen: false,
@@ -69,7 +82,7 @@ class LoadingPage extends StatelessWidget {
       personagemVM.start(partidaVM.partida?.personagens ?? []);
       objetoVM.start(partidaVM.partida?.objetos ?? []);
       localVM.start(partidaVM.partida?.locais ?? []);
-      gameVM.start(partidaVM.partida?.dicas ?? []);
+      gameVM.start(partidaVM.partida!, Providers.jogadorVM(context).jogador!);
 
       await Future.delayed(const Duration(seconds: 1));
 

@@ -79,7 +79,7 @@ class PersonagemViewModel extends ChangeNotifier {
     return _todos.where((p) => !_excluidos.any((pi) => pi.id == p.id)).toList();
   }
 
-  Personagem? personagemEscolhido;
+  Personagem? get personagemEscolhido => _escolhido;
 
   static ChangeNotifierProvider<PersonagemViewModel> create() =>
       ChangeNotifierProvider(

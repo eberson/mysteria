@@ -55,8 +55,7 @@ class _GamePageState extends State<GamePage> {
                   style: textStyle,
                 ),
                 Countdown(
-                  seconds: 30,
-                  // seconds: 590,
+                  seconds: 590,
                   build: (_, double time) {
                     final d = Duration(
                       seconds: time.toInt(),

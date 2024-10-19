@@ -129,7 +129,11 @@ class MysteryPage extends StatelessWidget {
                         ),
                       );
                     } else {
-                      //go to Victory Screen
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        "/game-won",
+                        (route) => route.settings.name == "/",
+                      );
                     }
                   }
                 },
