@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:mysteria/entidade/objeto.dart';
 import 'package:mysteria/entidade/partida.dart';
-import 'package:mysteria/entidade/personagem.dart';
 import 'package:provider/provider.dart';
 
 class ObjetoViewModel extends ChangeNotifier {

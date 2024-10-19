@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysteria/entidade/partida_resumida.dart';
-import 'package:mysteria/vm/jogador_vm.dart';
 import 'package:mysteria/vm/model/message.dart';
 import 'package:mysteria/vm/partida_vm.dart';
 import 'package:mysteria/widgets/botao.dart';

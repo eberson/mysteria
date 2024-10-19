@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mysteria/entidade/objeto.dart';
-import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/vm/objeto_vm.dart';
 import 'package:provider/provider.dart';
 
