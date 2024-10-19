@@ -48,9 +48,9 @@ class LocalViewModel extends ChangeNotifier {
     }
   }
 
-  void start(Partida partida) {
+  void start(List<Local> locais) {
     _todos.clear();
-    _todos.addAll(partida.locais);
+    _todos.addAll(locais);
 
     notifyListeners();
   }

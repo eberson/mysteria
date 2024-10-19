@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysteria/entidade/partida_resumida.dart';
+import 'package:mysteria/vm/jogador_vm.dart';
 import 'package:mysteria/vm/model/message.dart';
 import 'package:mysteria/vm/partida_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
@@ -76,14 +77,12 @@ class PartidaItem extends StatelessWidget {
     }
 
     try {
-      //TODO: desfaça isso
-      // final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
+      final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
 
-      // final message = await jogadorVM.adicionarNaPartida(partida);
+      await jogadorVM.adicionarNaPartida(partida);
 
-      // // ignore: use_build_context_synchronously
-      // await onSuccess(context, message);
-      await onSuccess(context, Message.success("Hey!"));
+      // ignore: use_build_context_synchronously
+      await onSuccess(context);
     } catch (e) {
       if (context.mounted) {
         final messenger = ScaffoldMessenger.of(context);
@@ -97,28 +96,12 @@ class PartidaItem extends StatelessWidget {
     }
   }
 
-  Future<void> onSuccess(BuildContext context, Message message) async {
-    if (message.error) {
-      if (context.mounted) {
-        final messenger = ScaffoldMessenger.of(context);
-
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(message.message),
-          ),
-        );
-      }
-
-      return;
-    }
-
+  Future<void> onSuccess(BuildContext context) async {    
     final partidaVM = Provider.of<PartidaViewModel>(context, listen: false);
     await partidaVM.setPartida(partida.id);
 
     if (context.mounted) {
-      Navigator.pushNamed(context, "/mystery");
-      //TODO: desfaça isso
-      // Navigator.pushNamed(context, "/lobby");
+      Navigator.pushNamed(context, "/lobby");
     }
   }
 }

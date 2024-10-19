@@ -17,6 +17,7 @@ class Botao extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: onPress,
         child: Container(
           padding: padding,

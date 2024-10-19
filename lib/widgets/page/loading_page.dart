@@ -4,8 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysteria/util/animations.dart';
 import 'package:mysteria/util/images.dart';
+import 'package:mysteria/vm/game_vm.dart';
+import 'package:mysteria/vm/local_vm.dart';
+import 'package:mysteria/vm/objeto_vm.dart';
+import 'package:mysteria/vm/partida_vm.dart';
+import 'package:mysteria/vm/personagem_vm.dart';
 import 'package:mysteria/widgets/headline.dart';
 import 'package:mysteria/widgets/stack_container.dart';
+import 'package:provider/provider.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});
@@ -49,7 +55,23 @@ class LoadingPage extends StatelessWidget {
 
   FrameCallback buildLoading(BuildContext context) {
     return (Duration _) async {
-      await Future.delayed(const Duration(seconds: 3));
+      final partidaVM = Provider.of<PartidaViewModel>(context, listen: false);
+
+      final personagemVM = Provider.of<PersonagemViewModel>(
+        context,
+        listen: false,
+      );
+
+      final objetoVM = Provider.of<ObjetoViewModel>(context, listen: false);
+      final localVM = Provider.of<LocalViewModel>(context, listen: false);
+      final gameVM = Provider.of<GameViewModel>(context, listen: false);
+
+      personagemVM.start(partidaVM.partida?.personagens ?? []);
+      objetoVM.start(partidaVM.partida?.objetos ?? []);
+      localVM.start(partidaVM.partida?.locais ?? []);
+      gameVM.start(partidaVM.partida?.dicas ?? []);
+
+      await Future.delayed(const Duration(seconds: 1));
 
       if (context.mounted) {
         Navigator.pushNamedAndRemoveUntil(

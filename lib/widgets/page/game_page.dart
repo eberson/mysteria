@@ -96,6 +96,7 @@ class _GamePageState extends State<GamePage> {
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, "/dicas"),
                       child: Image.asset(
                         Images.idea,
                         width: 48,

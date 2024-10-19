@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mysteria/entidade/personagem.dart';
+import 'package:mysteria/util/cores.dart';
 import 'package:mysteria/vm/personagem_vm.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,13 @@ class PersonagemView extends StatelessWidget {
             placeholder: (context, url) => const Center(
               child: CircularProgressIndicator(),
             ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            errorWidget: (context, url, error) => Center(
+              child: Icon(
+                Icons.error,
+                color: Cores.overShadowVermelho,
+                size: 64,
+              ),
+            ),
           ),
           const SizedBox(
             height: 4,

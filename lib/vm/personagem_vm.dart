@@ -50,9 +50,9 @@ class PersonagemViewModel extends ChangeNotifier {
     }
   }
 
-  void start(Partida partida) {
+  void start(List<Personagem> personagens) {
     _todos.clear();
-    _todos.addAll(partida.personagens);
+    _todos.addAll(personagens);
 
     notifyListeners();
   }

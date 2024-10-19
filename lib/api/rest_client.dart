@@ -27,6 +27,12 @@ abstract class RestClient {
   @POST('/partida/adicionar-jogador')
   Future<String> adicionarJogador(@Body() AdicionarJogador request);
 
+  @DELETE('/partida/remover-jogador')
+  Future<String> removerJogador(
+    @Query('PartidaId') String partidaId,
+    @Query('JogadorId') String jogadorId,
+  );
+
   @PUT('/partida/iniciar')
   Future<String> iniciarPartida(@Body() IniciarPartida request);
 

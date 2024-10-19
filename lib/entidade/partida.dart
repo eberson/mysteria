@@ -57,6 +57,12 @@ class Partida {
   bool get disponivel => countJogadores < maxJogadores;
   bool get salaCheia => countJogadores >= maxJogadores;
 
+  List<Charada> get dicas => <Charada>[
+        ...dicasLocal,
+        ...dicasObjeto,
+        ...dicasPersonagem,
+      ];
+
   factory Partida.fromJson(Map<String, dynamic> json) =>
       _$PartidaFromJson(json);
 

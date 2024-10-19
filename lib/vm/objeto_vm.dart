@@ -48,9 +48,9 @@ class ObjetoViewModel extends ChangeNotifier {
     }
   }
 
-  void start(Partida partida) {
+  void start(List<Objeto> objetos) {
     _todos.clear();
-    _todos.addAll(partida.objetos);
+    _todos.addAll(objetos);
 
     notifyListeners();
   }

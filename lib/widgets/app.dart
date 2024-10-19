@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysteria/widgets/page/dicas_page.dart';
 import 'package:mysteria/widgets/page/game_page.dart';
 import 'package:mysteria/widgets/page/home_page.dart';
 import 'package:mysteria/widgets/page/loading_page.dart';
@@ -24,6 +25,7 @@ class Aplicacao extends StatelessWidget {
         "/loading": (_) => const LoadingPage(),
         "/game": (_) => const GamePage(),
         "/mystery": (_) => const MysteryPage(),
+        "/dicas": (_) => const DicasPage(),
       },
     );
   }

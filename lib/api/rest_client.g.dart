@@ -164,6 +164,45 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<String> removerJogador(
+    String partidaId,
+    String jogadorId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'PartidaId': partidaId,
+      r'JogadorId': jogadorId,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<String>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/partida/remover-jogador',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
+    try {
+      _value = _result.data!;
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<String> iniciarPartida(IniciarPartida request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

@@ -49,7 +49,7 @@ class MysteryPage extends StatelessWidget {
                 height: 20,
               ),
               Botao(
-                child: const TextoSublinhado("Voltar"),
+                child: const TextoSublinhado("VOLTAR"),
                 onPress: () => Navigator.pop(context),
               ),
             ],
@@ -58,27 +58,6 @@ class MysteryPage extends StatelessWidget {
       );
 
   Widget body(BuildContext context, Partida partida) {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      final personagemVM = Provider.of<PersonagemViewModel>(
-        context,
-        listen: false,
-      );
-
-      final objetoVM = Provider.of<ObjetoViewModel>(
-        context,
-        listen: false,
-      );
-
-      final localVM = Provider.of<LocalViewModel>(
-        context,
-        listen: false,
-      );
-
-      personagemVM.start(partida);
-      objetoVM.start(partida);
-      localVM.start(partida);
-    });
-
     const verticalSpacer = SizedBox(
       height: 12,
     );
@@ -137,6 +116,11 @@ class MysteryPage extends StatelessWidget {
                   objetoVM.reset();
                   localVM.reset();
                 },
+              ),
+              verticalSpacer,
+              Botao(
+                child: const TextoSublinhado("VOLTAR"),
+                onPress: () => Navigator.pop(context),
               ),
             ],
           ),

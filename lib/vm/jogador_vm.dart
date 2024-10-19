@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:mysteria/api/request/adicionar_jogador.dart';
 import 'package:mysteria/api/rest_client.dart';
 import 'package:mysteria/entidade/jogador.dart';
 import 'package:mysteria/entidade/partida_resumida.dart';
-import 'package:mysteria/vm/model/message.dart';
 import 'package:provider/provider.dart';
 
 class JogadorViewModel extends ChangeNotifier {
@@ -14,7 +15,7 @@ class JogadorViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Message> adicionarNaPartida(PartidaResumida partida) async {
+  Future<void> adicionarNaPartida(PartidaResumida partida) async {
     if (_jogador == null) {
       return Future.error(
         "Não existe jogador configurado. Saia e entre novamente, por favor.",
@@ -22,16 +23,42 @@ class JogadorViewModel extends ChangeNotifier {
     }
 
     try {
-      final message = await RestClient.instance.adicionarJogador(
+      final id = await RestClient.instance.adicionarJogador(
         AdicionarJogador(
           partida.id,
           jogador!.nome,
         ),
       );
 
-      return Message.success(message);
+      _jogador = Jogador(
+        id: id.replaceAll(RegExp(r'"+'), ""),
+        nome: jogador!.nome,
+      );
+
+      notifyListeners();
     } catch (e) {
-      return Message.error(e.toString());
+      log("erro adicionando jogador: $e");
+      return Future.error("Não foi possível entrar na partida");
+    }
+  }
+
+  Future<void> removerDaPartida(String partidaId) async {
+    if (_jogador == null) {
+      return Future.error(
+        "Não existe jogador configurado. Saia e entre novamente, por favor.",
+      );
+    }
+
+    try {
+      await RestClient.instance.removerJogador(
+        partidaId,
+        _jogador!.id,
+      );
+
+      notifyListeners();
+    } catch (e) {
+      log("erro removendo jogador: $e");
+      return Future.error("Erro ao sair da partida");
     }
   }
 

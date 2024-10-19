@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysteria/entidade/status_partida.dart';
 import 'package:mysteria/util/space.dart';
+import 'package:mysteria/vm/jogador_vm.dart';
 import 'package:mysteria/vm/partida_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
 import 'package:mysteria/widgets/container_sombreado.dart';
@@ -127,8 +128,29 @@ class _LobbyPageState extends State<LobbyPage> {
               child: Column(
                 children: [
                   Botao(
-                    onPress: () => Navigator.pop(context),
-                    child: const TextoSublinhado("Voltar"),
+                    onPress: () async {
+                      try {
+                        final vm = Provider.of<JogadorViewModel>(
+                          context,
+                          listen: false,
+                        );
+
+                        await vm.removerDaPartida(partida?.id ?? "");
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(e.toString()),
+                            ),
+                          );
+                        }
+                      }
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const TextoSublinhado("VOLTAR"),
                   ),
                 ],
               ),
