@@ -77,12 +77,14 @@ class PartidaItem extends StatelessWidget {
     }
 
     try {
-      final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
+      //TODO: desfaça isso
+      // final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
 
-      final message = await jogadorVM.adicionarNaPartida(partida);
+      // final message = await jogadorVM.adicionarNaPartida(partida);
 
-      // ignore: use_build_context_synchronously
-      await onSuccess(context, message);
+      // // ignore: use_build_context_synchronously
+      // await onSuccess(context, message);
+      await onSuccess(context, Message.success("Hey!"));
     } catch (e) {
       if (context.mounted) {
         final messenger = ScaffoldMessenger.of(context);
@@ -115,7 +117,9 @@ class PartidaItem extends StatelessWidget {
     await partidaVM.setPartida(partida.id);
 
     if (context.mounted) {
-      Navigator.pushNamed(context, "/lobby");
+      Navigator.pushNamed(context, "/mystery");
+      //TODO: desfaça isso
+      // Navigator.pushNamed(context, "/lobby");
     }
   }
 }

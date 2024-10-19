@@ -49,7 +49,7 @@ class LoadingPage extends StatelessWidget {
 
   FrameCallback buildLoading(BuildContext context) {
     return (Duration _) async {
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 3));
 
       if (context.mounted) {
         Navigator.pushNamedAndRemoveUntil(
