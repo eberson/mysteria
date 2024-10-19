@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysteria/entidade/partida.dart';
 import 'package:mysteria/util/images.dart';
+import 'package:mysteria/util/providers.dart';
 import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/vm/local_vm.dart';
 import 'package:mysteria/vm/objeto_vm.dart';
@@ -97,9 +98,11 @@ class MysteryPage extends StatelessWidget {
               Botao(
                 child: const TextoSublinhado("DESCOBRI"),
                 onPress: () async {
-                  final personagem = personagemVM(context).personagemEscolhido;
-                  final objeto = objetoVM(context).objetoEscolhido;
-                  final local = localVM(context).localEscolhido;
+                  final personagem =
+                      Providers.personagemVM(context).personagemEscolhido;
+                      
+                  final objeto = Providers.objetoVM(context).objetoEscolhido;
+                  final local = Providers.localVM(context).localEscolhido;
 
                   if (personagem == null || objeto == null || local == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -113,7 +116,7 @@ class MysteryPage extends StatelessWidget {
                     return;
                   }
 
-                  final message = await gameVM(context).adivinha(
+                  final message = await Providers.gameVM(context).adivinha(
                     personagem,
                     local,
                     objeto,
@@ -136,9 +139,9 @@ class MysteryPage extends StatelessWidget {
               Botao(
                 child: const TextoSublinhado("TENTAR NOVAMENTE"),
                 onPress: () {
-                  personagemVM(context).reset();
-                  objetoVM(context).reset();
-                  localVM(context).reset();
+                  Providers.personagemVM(context).reset();
+                  Providers.objetoVM(context).reset();
+                  Providers.localVM(context).reset();
                 },
               ),
               verticalSpacer,
@@ -203,16 +206,4 @@ class MysteryPage extends StatelessWidget {
       ),
     );
   }
-
-  PersonagemViewModel personagemVM(BuildContext context) =>
-      Provider.of<PersonagemViewModel>(context, listen: false);
-
-  LocalViewModel localVM(BuildContext context) =>
-      Provider.of<LocalViewModel>(context, listen: false);
-
-  ObjetoViewModel objetoVM(BuildContext context) =>
-      Provider.of<ObjetoViewModel>(context, listen: false);
-
-  GameViewModel gameVM(BuildContext context) =>
-      Provider.of<GameViewModel>(context, listen: false);
 }
