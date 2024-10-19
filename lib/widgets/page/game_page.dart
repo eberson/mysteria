@@ -110,8 +110,11 @@ class _GamePageState extends State<GamePage> {
                   child: Column(
                     children: [
                       Botao(
-                        onPress: () {},
-                        child: const TextoSublinhado("DESCOBRI!"),
+                        onPress: () => Navigator.pushNamed(
+                          context,
+                          "/mystery",
+                        ),
+                        child: const TextoSublinhado("VER MISTÉRIO"),
                       ),
                     ],
                   ),

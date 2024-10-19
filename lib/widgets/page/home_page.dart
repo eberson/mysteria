@@ -76,7 +76,6 @@ class _HomePageState extends State<HomePage> {
     final mainSpace = height * 0.15;
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       body: ContainerTela(
         child: SingleChildScrollView(
           child: Column(
@@ -151,6 +150,14 @@ class _HomePageState extends State<HomePage> {
 
   void _entrar(BuildContext context, String? nome) {
     if (!_podeEntrar) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Você só pode entrar se autorizar o uso de geolocalização.",
+          ),
+        ),
+      );
+
       return;
     }
 

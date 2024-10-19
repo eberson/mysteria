@@ -1,5 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:mysteria/entidade/charada.dart';
+import 'package:mysteria/entidade/local.dart';
+import 'package:mysteria/entidade/objeto.dart';
+import 'package:mysteria/entidade/personagem.dart';
+import 'package:mysteria/vm/model/message.dart';
 import 'package:provider/provider.dart';
 
 class GameViewModel extends ChangeNotifier {
@@ -17,6 +21,10 @@ class GameViewModel extends ChangeNotifier {
   void addCharadaColetada(Charada charada) {
     _coletadas.add(charada);
     notifyListeners();
+  }
+
+  Future<Message> adivinha(Personagem personagem, Local local, Objeto objeto) async {
+    return Message.error("Que pena você errou. Tente novamente!");
   }
 
   int get dicasColetadas => _coletadas.length;

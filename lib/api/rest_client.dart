@@ -1,5 +1,6 @@
 import 'package:mysteria/api/dio.dart';
 import 'package:mysteria/api/request/adicionar_jogador.dart';
+import 'package:mysteria/api/request/adivinha_request.dart';
 import 'package:mysteria/api/request/iniciar_partida.dart';
 import 'package:mysteria/entidade/partida.dart';
 import 'package:mysteria/entidade/partida_resumida.dart';
@@ -35,6 +36,9 @@ abstract class RestClient {
 
   @PUT('/partida/iniciar')
   Future<String> iniciarPartida(@Body() IniciarPartida request);
+
+  @PUT('/partida/adivinha')
+  Future<String> adivinhar(@Body() AdivinhaRequest request);
 
   static RestClient? _instance;
   static RestClient get instance {
