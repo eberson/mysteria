@@ -17,6 +17,11 @@ class PartidaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final textWidth = screenSize.width * 0.7;
+
+    final tema = Theme.of(context);
+
     final jaldiStyle = GoogleFonts.jaldi(
       fontSize: 16,
     );
@@ -31,7 +36,13 @@ class PartidaItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextoSublinhado(partida.titulo.toUpperCase()),
+                  SizedBox(
+                    width: textWidth,
+                    child: TextoSublinhado(
+                      partida.titulo.toUpperCase(),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
                   SizedBox(
                     width: 48,
                     height: 28,
@@ -75,27 +86,29 @@ class PartidaItem extends StatelessWidget {
       return;
     }
 
-    try {
-      final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
+    Navigator.pushNamed(context, "/game");
 
-      await jogadorVM.adicionarNaPartida(partida);
+    // try {
+    //   final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
 
-      // ignore: use_build_context_synchronously
-      await onSuccess(context);
-    } catch (e) {
-      if (context.mounted) {
-        final messenger = ScaffoldMessenger.of(context);
+    //   await jogadorVM.adicionarNaPartida(partida);
 
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-          ),
-        );
-      }
-    }
+    //   // ignore: use_build_context_synchronously
+    //   await onSuccess(context);
+    // } catch (e) {
+    //   if (context.mounted) {
+    //     final messenger = ScaffoldMessenger.of(context);
+
+    //     messenger.showSnackBar(
+    //       SnackBar(
+    //         content: Text(e.toString()),
+    //       ),
+    //     );
+    //   }
+    // }
   }
 
-  Future<void> onSuccess(BuildContext context) async {    
+  Future<void> onSuccess(BuildContext context) async {
     final partidaVM = Provider.of<PartidaViewModel>(context, listen: false);
     await partidaVM.setPartida(partida.id);
 

@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mysteria/geo/locator.dart';
 import 'package:mysteria/util/images.dart';
 import 'package:mysteria/util/ints.dart';
+import 'package:mysteria/util/providers.dart';
 import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
 import 'package:mysteria/widgets/radar.dart';
@@ -20,6 +26,26 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  StreamSubscription<Position>? positionSubscription;
+
+  @override
+  void initState() {
+    positionSubscription = positionStream(_onPositionChanged);
+
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => Providers.pontoInteresseVM(context).start([]),
+    );
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    positionSubscription?.cancel();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textStyle = GoogleFonts.julee(
@@ -127,5 +153,19 @@ class _GamePageState extends State<GamePage> {
         ),
       ),
     );
+  }
+
+  void _onPositionChanged(Position event) {
+    final coord = LatLng(event.latitude, event.longitude);
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("${coord.latitude}, ${coord.longitude}"),
+        ),
+      );
+    });
+
+    Providers.pontoInteresseVM(context).setUserLocation(coord);
   }
 }

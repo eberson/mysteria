@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:latlong2/latlong.dart';
 
@@ -22,7 +23,10 @@ double getDistanceFromLatLonInKilometers(LatLng p1, LatLng p2) {
 }
 
 double getDistanceFromLatLonInMeters(LatLng p1, LatLng p2) {
-  return getDistanceFromLatLonInKilometers(p1, p2) * 1000;
+  final distance = getDistanceFromLatLonInKilometers(p1, p2) * 1000;
+
+  log("distance between $p1 and $p2 was $distance");
+  return distance;
 }
 
 double deg2rad(deg) {

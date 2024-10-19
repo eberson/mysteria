@@ -84,6 +84,8 @@ class LoadingPage extends StatelessWidget {
       localVM.start(partidaVM.partida?.locais ?? []);
       gameVM.start(partidaVM.partida!, Providers.jogadorVM(context).jogador!);
 
+      Providers.pontoInteresseVM(context).start(partidaVM.partida?.dicas ?? []);
+
       await Future.delayed(const Duration(seconds: 1));
 
       if (context.mounted) {

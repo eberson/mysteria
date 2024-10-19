@@ -41,6 +41,27 @@ class Radar extends StatefulWidget {
 }
 
 class _RadarState extends State<Radar> {
+  final userPoint = const Icon(
+    Icons.place,
+    color: Colors.blue,
+    size: 32,
+  );
+
+  final interestPoint = const Icon(
+    Icons.place,
+    color: Colors.yellow,
+    size: 32,
+  );
+
+  final collectablePoint = const Icon(
+    Icons.place,
+    shadows: <Shadow>[
+      Shadow(color: Colors.white, blurRadius: 15.0),
+    ],
+    color: Colors.yellow,
+    size: 32,
+  );
+
   late double topLeft;
   late double topRight;
 
@@ -54,18 +75,29 @@ class _RadarState extends State<Radar> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<PontoInteresseViewModel>(context);
-    final pontos = vm.pontosProximos.map((e) => _locationToWidget(e)).toList();
+    final proximos = vm.pontosProximos
+        .map(
+          (e) => _locationToWidget(e, interestPoint),
+        )
+        .toList();
+
+    final coletaveis = vm.pontosProximos
+        .map(
+          (e) => _locationToWidget(e, collectablePoint),
+        )
+        .toList();
 
     return Stack(
       children: [
         _BaseRadar(widget.size),
-        _locationToWidget(vm.jogador!),
-        ...pontos,
+        _locationToWidget(vm.jogador!, userPoint),
+        ...coletaveis,
+        ...proximos,
       ],
     );
   }
 
-  Positioned _locationToWidget(LatLng location) {
+  Positioned _locationToWidget(LatLng location, Widget widget) {
     final proj = Projection.instance;
     final point = proj.latLngToPoint(location);
 
@@ -75,11 +107,7 @@ class _RadarState extends State<Radar> {
     return Positioned(
       top: point.y,
       left: point.x,
-      child: const Icon(
-        Icons.place,
-        color: Colors.blue,
-        size: 24,
-      ),
+      child: widget,
     );
   }
 }

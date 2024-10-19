@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class TextoSublinhado extends StatelessWidget {
   final String content;
   final TextStyle? style;
+  final TextAlign? textAlign;
 
   const TextoSublinhado(
     this.content, {
     super.key,
     this.style,
+    this.textAlign,
   });
 
   @override
@@ -17,7 +19,7 @@ class TextoSublinhado extends StatelessWidget {
 
     return Text(
       content,
-      textAlign: TextAlign.center,
+      textAlign: textAlign ?? TextAlign.center,
       style: currentStyle?.copyWith(
         decoration: TextDecoration.underline,
       ),

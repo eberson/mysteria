@@ -36,7 +36,7 @@ class Projection {
   bool _notFitArea(double size, Point point) => !_fitArea(size, point);
 
   bool _fitArea(double size, Point point) {
-    final max = size - 24;
+    final max = size - 32;
     return (point.x >= 0 && point.x <= max) && (point.y >= 0 && point.y <= max);
   }
 

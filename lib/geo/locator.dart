@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
 LocationSettings getLocationSettings() {
+  const distanceFilter = 1;
+
   if (defaultTargetPlatform == TargetPlatform.android) {
     return AndroidSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
+      distanceFilter: distanceFilter,
       forceLocationManager: true,
       intervalDuration: const Duration(seconds: 10),
     );
@@ -16,7 +20,7 @@ LocationSettings getLocationSettings() {
     return AppleSettings(
       accuracy: LocationAccuracy.high,
       activityType: ActivityType.fitness,
-      distanceFilter: 100,
+      distanceFilter: distanceFilter,
       pauseLocationUpdatesAutomatically: true,
       // Only set to true if our app will be started up in the background.
       showBackgroundLocationIndicator: false,
@@ -26,14 +30,14 @@ LocationSettings getLocationSettings() {
   if (kIsWeb) {
     return WebSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
+      distanceFilter: distanceFilter,
       maximumAge: const Duration(minutes: 5),
     );
   }
 
   return const LocationSettings(
     accuracy: LocationAccuracy.high,
-    distanceFilter: 100,
+    distanceFilter: distanceFilter,
   );
 }
 
@@ -64,5 +68,13 @@ Future<Position> determinePosition() async {
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
-  return await Geolocator.getCurrentPosition();
+  return await Geolocator.getCurrentPosition(
+      locationSettings: getLocationSettings());
+}
+
+StreamSubscription<Position> positionStream(
+  void Function(Position event) onData,
+) {
+  return Geolocator.getPositionStream(locationSettings: getLocationSettings())
+      .listen(onData);
 }
