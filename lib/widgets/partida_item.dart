@@ -86,26 +86,24 @@ class PartidaItem extends StatelessWidget {
       return;
     }
 
-    Navigator.pushNamed(context, "/game");
+    try {
+      final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
 
-    // try {
-    //   final jogadorVM = Provider.of<JogadorViewModel>(context, listen: false);
+      await jogadorVM.adicionarNaPartida(partida);
 
-    //   await jogadorVM.adicionarNaPartida(partida);
+      // ignore: use_build_context_synchronously
+      await onSuccess(context);
+    } catch (e) {
+      if (context.mounted) {
+        final messenger = ScaffoldMessenger.of(context);
 
-    //   // ignore: use_build_context_synchronously
-    //   await onSuccess(context);
-    // } catch (e) {
-    //   if (context.mounted) {
-    //     final messenger = ScaffoldMessenger.of(context);
-
-    //     messenger.showSnackBar(
-    //       SnackBar(
-    //         content: Text(e.toString()),
-    //       ),
-    //     );
-    //   }
-    // }
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
+    }
   }
 
   Future<void> onSuccess(BuildContext context) async {
@@ -113,7 +111,7 @@ class PartidaItem extends StatelessWidget {
     await partidaVM.setPartida(partida.id);
 
     if (context.mounted) {
-      Navigator.pushNamed(context, "/lobby");
+      Navigator.pushNamed(context, "/loading");
     }
   }
 }

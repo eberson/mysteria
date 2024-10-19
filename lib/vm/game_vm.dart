@@ -68,6 +68,8 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Partida? get partida => _partida;
+
   int get dicasColetadas => _coletadas.length;
   List<Charada> get todas => _todas;
   List<Charada> get coletadas => _coletadas;

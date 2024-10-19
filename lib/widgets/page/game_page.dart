@@ -5,17 +5,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mysteria/entidade/charada.dart';
 import 'package:mysteria/geo/locator.dart';
 import 'package:mysteria/util/images.dart';
 import 'package:mysteria/util/ints.dart';
 import 'package:mysteria/util/providers.dart';
 import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
-import 'package:mysteria/widgets/radar.dart';
+import 'package:mysteria/widgets/dica_view.dart';
 import 'package:mysteria/widgets/stack_container.dart';
 import 'package:mysteria/widgets/texto_sublinhado.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:timer_count_down/timer_count_down.dart';
 
 class GamePage extends StatefulWidget {
@@ -26,22 +26,32 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  StreamSubscription<Position>? positionSubscription;
+  late Timer? _timer;
 
   @override
   void initState() {
-    positionSubscription = positionStream(_onPositionChanged);
+    _timer = Timer.periodic(const Duration(seconds: 2), (_) async {
+      try {
+        final position = await determinePosition();
 
-    SchedulerBinding.instance.addPostFrameCallback(
-      (_) => Providers.pontoInteresseVM(context).start([]),
-    );
+        final ctx = context;
+
+        if (ctx.mounted) {
+          Providers.pontoInteresseVM(ctx).setUserLocation(
+            LatLng(position.latitude, position.longitude),
+          );
+        }
+      } catch (e) {
+        showError(e);
+      }
+    });
 
     super.initState();
   }
 
   @override
   void dispose() {
-    positionSubscription?.cancel();
+    _timer?.cancel();
 
     super.dispose();
   }
@@ -55,117 +65,138 @@ class _GamePageState extends State<GamePage> {
 
     final screenSize = MediaQuery.of(context).size;
     final titleSize = screenSize.width - 40;
+    final dicaViewWidth = (screenSize.width - 40) / 2;
 
     final radarSize = screenSize.width - 60;
 
-    print("radarSize: $radarSize");
-
     final gameVM = Provider.of<GameViewModel>(context);
+    final dicasPersonagem = gameVM.partida?.dicasPersonagem ?? [];
+    final dicasObjeto = gameVM.partida?.dicasObjeto ?? [];
+    final dicasLocal = gameVM.partida?.dicasLocal ?? [];
+
+    final titleStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: Colors.green,
+        );
 
     return Scaffold(
       body: StackContainer(
-        child: Column(
-          children: [
-            Center(
-              child: Image.asset(
-                Images.mysteriaName,
-                width: titleSize,
-                fit: BoxFit.fitHeight,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Tempo Restante: ",
-                  style: textStyle,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Image.asset(
+                  Images.mysteriaName,
+                  width: titleSize,
+                  fit: BoxFit.fitHeight,
                 ),
-                Countdown(
-                  seconds: 590,
-                  build: (_, double time) {
-                    final d = Duration(
-                      seconds: time.toInt(),
-                    );
-
-                    return Text(
-                      "${d.inMinutes.toClockPart()}:${d.inSeconds.toClockPart()}",
-                      style: textStyle,
-                    );
-                  },
-                  onFinished: () => Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    "/game-over",
-                    (route) => route.settings.name == "/",
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Tempo Restante: ",
+                    style: textStyle,
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Radar(
-              size: radarSize,
-              boundary: RadarBoundary(
-                const LatLng(-21.605032, -48.367523),
-                const LatLng(-21.604654, -48.368322),
-                const LatLng(-21.603862, -48.367904),
-                const LatLng(-21.604241, -48.367108),
-              ),
-            ),
-            const SizedBox(
-              height: 80,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                badges.Badge(
-                  showBadge: gameVM.dicasColetadas > 0,
-                  badgeContent: Text("${gameVM.dicasColetadas}"),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, "/dicas"),
-                      child: Image.asset(
-                        Images.idea,
-                        width: 48,
-                        height: 48,
-                      ),
+                  Countdown(
+                    seconds: 590,
+                    build: (_, double time) {
+                      final d = Duration(
+                        seconds: time.toInt(),
+                      );
+
+                      return Text(
+                        "${d.inMinutes.toClockPart()}:${d.inSeconds.toClockPart()}",
+                        style: textStyle,
+                      );
+                    },
+                    onFinished: () => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      "/game-over",
+                      (route) => route.settings.name == "/",
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 300,
-                  child: Column(
-                    children: [
-                      Botao(
-                        onPress: () => Navigator.pushNamed(
-                          context,
-                          "/mystery",
-                        ),
-                        child: const TextoSublinhado("VER MISTÉRIO"),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextoSublinhado(
+                "PERSONAGEM",
+                style: titleStyle,
+              ),
+              showDica(dicasPersonagem, dicaViewWidth),
+              const SizedBox(
+                height: 20,
+              ),
+              TextoSublinhado(
+                "OBJETO",
+                style: titleStyle,
+              ),
+              showDica(dicasObjeto, dicaViewWidth),
+              const SizedBox(
+                height: 20,
+              ),
+              TextoSublinhado(
+                "LOCAL",
+                style: titleStyle,
+              ),
+              showDica(dicasLocal, dicaViewWidth),
+              const SizedBox(
+                height: 20,
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              SizedBox(
+                width: double.maxFinite,
+                child: Column(
+                  children: [
+                    Botao(
+                      onPress: () => Navigator.pushNamed(
+                        context,
+                        "/mystery",
                       ),
-                    ],
-                  ),
+                      child: const TextoSublinhado("VER MISTÉRIO"),
+                    ),
+                  ],
                 ),
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
-  void _onPositionChanged(Position event) {
-    final coord = LatLng(event.latitude, event.longitude);
+  Widget showDica(List<Charada> charadas, double width) {
+    if (charadas.isEmpty) {
+      return const Center(
+        child: Text("Sem dicas para apresentar"),
+      );
+    }
 
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        DicaView(
+          charada: charadas[0],
+          width: width,
+        ),
+        DicaView(
+          charada: charadas[1],
+          width: width,
+        ),
+      ],
+    );
+  }
+
+  void showError(dynamic e) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${coord.latitude}, ${coord.longitude}"),
+          content: Text(e),
         ),
       );
     });
-
-    Providers.pontoInteresseVM(context).setUserLocation(coord);
   }
 }

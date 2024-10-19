@@ -25,7 +25,7 @@ double getDistanceFromLatLonInKilometers(LatLng p1, LatLng p2) {
 double getDistanceFromLatLonInMeters(LatLng p1, LatLng p2) {
   final distance = getDistanceFromLatLonInKilometers(p1, p2) * 1000;
 
-  log("distance between $p1 and $p2 was $distance");
+  // log("distance between $p1 and $p2 was $distance");
   return distance;
 }
 

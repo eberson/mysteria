@@ -12,7 +12,6 @@ class PontoInteresseViewModel extends ChangeNotifier {
 
   void setUserLocation(LatLng point) {
     _jogador = point;
-    onMove();
     notifyListeners();
   }
 

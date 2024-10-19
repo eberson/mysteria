@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:latlong2/latlong.dart';
 
 part 'charada.g.dart';
 
@@ -10,6 +11,8 @@ class Charada {
   final double longitude;
 
   Charada(this.conteudo, this.latitude, this.longitude);
+
+  LatLng get coord => LatLng(latitude, longitude);
 
   factory Charada.fromJson(Map<String, dynamic> json) =>
       _$CharadaFromJson(json);
