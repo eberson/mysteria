@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mysteria/entidade/partida.dart';
 import 'package:mysteria/util/images.dart';
 import 'package:mysteria/util/providers.dart';
-import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/vm/local_vm.dart';
 import 'package:mysteria/vm/objeto_vm.dart';
 import 'package:mysteria/vm/partida_vm.dart';
@@ -100,7 +99,7 @@ class MysteryPage extends StatelessWidget {
                 onPress: () async {
                   final personagem =
                       Providers.personagemVM(context).personagemEscolhido;
-                      
+
                   final objeto = Providers.objetoVM(context).objetoEscolhido;
                   final local = Providers.localVM(context).localEscolhido;
 
