@@ -64,9 +64,17 @@ class LocalViewModel extends ChangeNotifier {
 
   Local? get localEscolhido => _escolhido;
 
+  void tryAgain() {
+    _escolhido = null;
+    _excluidos.clear();
+
+    notifyListeners();
+  }
+
   void reset() {
     _escolhido = null;
     _excluidos.clear();
+    _todos.clear();
 
     notifyListeners();
   }

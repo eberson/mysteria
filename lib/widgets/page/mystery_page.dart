@@ -138,9 +138,9 @@ class MysteryPage extends StatelessWidget {
               Botao(
                 child: const TextoSublinhado("TENTAR NOVAMENTE"),
                 onPress: () {
-                  Providers.personagemVM(context).reset();
-                  Providers.objetoVM(context).reset();
-                  Providers.localVM(context).reset();
+                  Providers.personagemVM(context).tryAgain();
+                  Providers.objetoVM(context).tryAgain();
+                  Providers.localVM(context).tryAgain();
                 },
               ),
               verticalSpacer,

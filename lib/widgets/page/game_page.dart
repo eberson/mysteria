@@ -67,9 +67,11 @@ class _GamePageState extends State<GamePage> {
                       style: textStyle,
                     );
                   },
-                  onFinished: () {
-                    print("ACABOU!!!!");
-                  },
+                  onFinished: () => Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    "/game-over",
+                    (route) => route.settings.name == "/",
+                  ),
                 ),
               ],
             ),

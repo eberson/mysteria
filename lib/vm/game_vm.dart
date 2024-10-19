@@ -23,8 +23,16 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Message> adivinha(Personagem personagem, Local local, Objeto objeto) async {
+  Future<Message> adivinha(
+      Personagem personagem, Local local, Objeto objeto) async {
     return Message.error("Que pena você errou. Tente novamente!");
+  }
+
+  void reset() {
+    _todas.clear();
+    _coletadas.clear();
+
+    notifyListeners();
   }
 
   int get dicasColetadas => _coletadas.length;

@@ -30,6 +30,11 @@ class PontoInteresseViewModel extends ChangeNotifier {
         .toList();
   }
 
+  void reset() {
+    _locais.clear();
+    _proximos.clear();
+  }
+
   LatLng? get jogador => _jogador;
   List<LatLng> get pontosProximos => _proximos;
 

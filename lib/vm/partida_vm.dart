@@ -20,8 +20,6 @@ class PartidaViewModel extends ChangeNotifier {
       return;
     }
 
-    
-
     notifyListeners();
   }
 
@@ -35,6 +33,11 @@ class PartidaViewModel extends ChangeNotifier {
     } catch (e) {
       Future.error(e.toString());
     }
+  }
+
+  void reset() {
+    _partida = null;
+    notifyListeners();
   }
 
   Future<void> setPartida(String partida) async {

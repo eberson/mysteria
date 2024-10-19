@@ -5,6 +5,7 @@ import 'package:mysteria/vm/local_vm.dart';
 import 'package:mysteria/vm/objeto_vm.dart';
 import 'package:mysteria/vm/partida_vm.dart';
 import 'package:mysteria/vm/personagem_vm.dart';
+import 'package:mysteria/vm/pontos_interesse_vm.dart';
 import 'package:provider/provider.dart';
 
 class Providers {
@@ -23,8 +24,11 @@ class Providers {
       Provider.of<GameViewModel>(context, listen: false);
 
   static JogadorViewModel jogadorVM(BuildContext context) =>
-      Provider.of<JogadorViewModel>(context);
+      Provider.of<JogadorViewModel>(context, listen: false);
 
   static PartidaViewModel partidaVM(BuildContext context) =>
-      Provider.of<PartidaViewModel>(context);
+      Provider.of<PartidaViewModel>(context, listen: false);
+
+  static PontoInteresseViewModel pontoInteresseVM(BuildContext context) =>
+      Provider.of<PontoInteresseViewModel>(context, listen: false);
 }

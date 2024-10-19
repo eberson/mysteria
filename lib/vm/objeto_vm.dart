@@ -62,9 +62,17 @@ class ObjetoViewModel extends ChangeNotifier {
     return _todos.where((p) => !_excluidos.any((pi) => pi.id == p.id)).toList();
   }
 
+  void tryAgain() {
+    _escolhido = null;
+    _excluidos.clear();
+
+    notifyListeners();
+  }
+
   void reset() {
     _escolhido = null;
     _excluidos.clear();
+    _todos.clear();
 
     notifyListeners();
   }

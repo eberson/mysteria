@@ -62,6 +62,11 @@ class JogadorViewModel extends ChangeNotifier {
     }
   }
 
+  void reset() {
+    _jogador = null;
+    notifyListeners();
+  }
+
   Jogador? get jogador => _jogador;
 
   static ChangeNotifierProvider<JogadorViewModel> create() =>

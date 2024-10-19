@@ -56,9 +56,17 @@ class PersonagemViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void tryAgain() {
+    _escolhido = null;
+    _excluidos.clear();
+
+    notifyListeners();
+  }
+
   void reset() {
     _escolhido = null;
     _excluidos.clear();
+    _todos.clear();
 
     notifyListeners();
   }
