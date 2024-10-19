@@ -7,13 +7,14 @@ import 'package:provider/provider.dart';
 class PartidaListViewModel extends ChangeNotifier {
   List<PartidaResumida> _partidas = <PartidaResumida>[];
 
-  void refresh() {
-    RestClient.instance
-        .listaPartidasPorStatus(StatusPartida.aguardando)
-        .then((items) {
-      _partidas = items;
+  Future<void> refresh() async {
+    try {
+      _partidas = await RestClient.instance
+          .listaPartidasPorStatus(StatusPartida.aguardando);
       notifyListeners();
-    });
+    } catch (e) {
+      return Future.error("Não existem partidas abertas");
+    }
   }
 
   List<PartidaResumida> get partidas => _partidas;

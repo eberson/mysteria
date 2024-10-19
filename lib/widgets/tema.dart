@@ -23,7 +23,7 @@ ThemeData temaAtual() {
         fontSize: 30,
       ),
       headlineSmall: GoogleFonts.julee().copyWith(
-        fontSize: baseFontSize,
+        fontSize: 25,
       ),
       titleLarge: GoogleFonts.julee().copyWith(
         fontSize: baseFontSize,

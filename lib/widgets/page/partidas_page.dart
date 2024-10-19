@@ -20,13 +20,11 @@ class PartidasPage extends StatefulWidget {
 }
 
 class _PartidasPageState extends State<PartidasPage> {
+  String _errorMessage = "";
+
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      final vm = Provider.of<PartidaListViewModel>(context, listen: false);
-      vm.refresh();
-    });
-
+    SchedulerBinding.instance.addPostFrameCallback((_) => refreshPartidas());
     super.initState();
   }
 
@@ -56,7 +54,7 @@ class _PartidasPageState extends State<PartidasPage> {
             Padding(
               padding: Space.stayBottom,
               child: Botao(
-                onPress: partidasListVM.refresh,
+                onPress: refreshPartidas,
                 child: const TextoSublinhado("ATUALIZAR"),
               ),
             ),
@@ -72,17 +70,28 @@ class _PartidasPageState extends State<PartidasPage> {
         itemBuilder: (context, index) => PartidaItem(partidas[index]),
       );
 
-  Widget empty() => const Center(
+  Widget empty() => Center(
         child: SizedBox(
           width: 250,
           height: 210,
           child: ContainerSombreado(
             child: Center(
               child: TextoSublinhado(
-                "NÃO EXISTEM PARTIDAS ABERTAS!",
+                _errorMessage.toUpperCase(),
               ),
             ),
           ),
         ),
       );
+
+  Future<void> refreshPartidas() async {
+    try {
+      final vm = Provider.of<PartidaListViewModel>(context, listen: false);
+      await vm.refresh();
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    }
+  }
 }

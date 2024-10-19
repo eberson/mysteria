@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 
 enum StatusPartida {
-  @JsonValue(2)
+  @JsonValue("EmAndamento")
   andamento("Em Andamento"),
-  @JsonValue(1)
+  @JsonValue("Aguardando")
   aguardando("Aguardando"),
-  @JsonValue(3)
+  @JsonValue("Finalizada")
   finalizada("Finalizada");
 
   final String description;
@@ -15,11 +15,11 @@ enum StatusPartida {
   String toJson() {
     switch (this) {
       case StatusPartida.andamento:
-        return "2";
+        return "EmAndamento";
       case StatusPartida.aguardando:
-        return "1";
+        return "Aguardando";
       case StatusPartida.finalizada:
-        return "3";
+        return "Finalizada";
     }
   }
 }

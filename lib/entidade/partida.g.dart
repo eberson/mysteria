@@ -57,7 +57,7 @@ Map<String, dynamic> _$PartidaToJson(Partida instance) => <String, dynamic>{
     };
 
 const _$StatusPartidaEnumMap = {
-  StatusPartida.andamento: 2,
-  StatusPartida.aguardando: 1,
-  StatusPartida.finalizada: 3,
+  StatusPartida.andamento: 'EmAndamento',
+  StatusPartida.aguardando: 'Aguardando',
+  StatusPartida.finalizada: 'Finalizada',
 };
