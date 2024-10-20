@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysteria/entidade/status_partida.dart';
+import 'package:mysteria/util/providers.dart';
 import 'package:mysteria/util/space.dart';
 import 'package:mysteria/vm/jogador_vm.dart';
 import 'package:mysteria/vm/partida_vm.dart';
@@ -70,92 +71,102 @@ class _LobbyPageState extends State<LobbyPage> {
     final jogadores = partidaVM.jogadores;
     final partida = partidaVM.partida;
 
-    return Scaffold(
-      body: StackContainer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Headline("LOBBY"),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 16,
-                bottom: 16,
-                left: 25,
-                right: 25,
-              ),
-              child: ContainerSombreado(
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  height: containerHeight,
-                  child: Column(
-                    children: [
-                      Text(
-                        "Jogadores: ${partida?.countJogadores ?? 0} / ${partida?.maxJogadores ?? 0}",
-                        style: GoogleFonts.jaldi(
-                          fontSize: 16,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          return;
+        }
+
+        Providers.jogadorVM(context).removerDaPartida(partida?.id ?? "");
+      },
+      child: Scaffold(
+        body: StackContainer(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Headline("LOBBY"),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  bottom: 16,
+                  left: 25,
+                  right: 25,
+                ),
+                child: ContainerSombreado(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    height: containerHeight,
+                    child: Column(
+                      children: [
+                        Text(
+                          "Jogadores: ${partida?.countJogadores ?? 0} / ${partida?.maxJogadores ?? 0}",
+                          style: GoogleFonts.jaldi(
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: jogadores.length,
-                          itemBuilder: (context, index) => Container(
-                            margin: const EdgeInsets.only(bottom: 18),
-                            child: TextoSublinhado(
-                              "JOGADOR(A): ${jogadores[index].nome.toUpperCase()}",
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: jogadores.length,
+                            itemBuilder: (context, index) => Container(
+                              margin: const EdgeInsets.only(bottom: 18),
+                              child: TextoSublinhado(
+                                "JOGADOR(A): ${jogadores[index].nome.toUpperCase()}",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Text(
-                        "Aguardando Jogadores...",
-                        style: GoogleFonts.jaldi(
-                          fontSize: 16,
+                        const SizedBox(
+                          height: 12,
                         ),
-                      ),
-                    ],
+                        Text(
+                          "Aguardando Jogadores...",
+                          style: GoogleFonts.jaldi(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: Space.stayBottom,
-              child: Column(
-                children: [
-                  Botao(
-                    onPress: () async {
-                      try {
-                        final vm = Provider.of<JogadorViewModel>(
-                          context,
-                          listen: false,
-                        );
-
-                        await vm.removerDaPartida(partida?.id ?? "");
-                      } catch (e) {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(e.toString()),
-                            ),
+              Padding(
+                padding: Space.stayBottom,
+                child: Column(
+                  children: [
+                    Botao(
+                      onPress: () async {
+                        try {
+                          final vm = Provider.of<JogadorViewModel>(
+                            context,
+                            listen: false,
                           );
+      
+                          await vm.removerDaPartida(partida?.id ?? "");
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                              ),
+                            );
+                          }
                         }
-                      }
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const TextoSublinhado("VOLTAR"),
-                  ),
-                ],
+      
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const TextoSublinhado("VOLTAR"),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
