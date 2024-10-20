@@ -20,8 +20,6 @@ class PartidaItem extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final textWidth = screenSize.width * 0.7;
 
-    final tema = Theme.of(context);
-
     final jaldiStyle = GoogleFonts.jaldi(
       fontSize: 16,
     );
