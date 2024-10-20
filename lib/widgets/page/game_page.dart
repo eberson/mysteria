@@ -10,6 +10,7 @@ import 'package:mysteria/entidade/charada.dart';
 import 'package:mysteria/geo/locator.dart';
 import 'package:mysteria/util/images.dart';
 import 'package:mysteria/util/ints.dart';
+import 'package:mysteria/util/partida_reset.dart';
 import 'package:mysteria/util/providers.dart';
 import 'package:mysteria/vm/game_vm.dart';
 import 'package:mysteria/widgets/botao.dart';
@@ -86,86 +87,97 @@ class _GamePageState extends State<GamePage> {
           color: Colors.green,
         );
 
-    return Scaffold(
-      body: StackContainer(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                child: Image.asset(
-                  Images.mysteriaName,
-                  width: titleSize,
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Tempo Restante: ",
-                    style: textStyle,
-                  ),
-                  Countdown(
-                    seconds: 590,
-                    build: (_, double time) {
-                      final d = Duration(
-                        seconds: time.toInt(),
-                      );
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          return;
+        }
 
-                      return Text(
-                        "${d.inMinutes.toClockPart()}:${d.inSeconds.toClockPart()}",
-                        style: textStyle,
-                      );
-                    },
-                    onFinished: () => goToGameOver(),
+        Providers.jogadorVM(context).removerDaPartida(gameVM.partida?.id ?? "");
+        resetPartida(context);
+      },
+      child: Scaffold(
+        body: StackContainer(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Center(
+                  child: Image.asset(
+                    Images.mysteriaName,
+                    width: titleSize,
+                    fit: BoxFit.fitHeight,
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextoSublinhado(
-                "PERSONAGEM",
-                style: titleStyle,
-              ),
-              showDica(dicasPersonagem, dicaViewWidth),
-              const SizedBox(
-                height: 20,
-              ),
-              TextoSublinhado(
-                "OBJETO",
-                style: titleStyle,
-              ),
-              showDica(dicasObjeto, dicaViewWidth),
-              const SizedBox(
-                height: 20,
-              ),
-              TextoSublinhado(
-                "LOCAL",
-                style: titleStyle,
-              ),
-              showDica(dicasLocal, dicaViewWidth),
-              const SizedBox(
-                height: 20,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: Column(
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Botao(
-                      onPress: () => Navigator.pushNamed(
-                        context,
-                        "/mystery",
-                      ),
-                      child: const TextoSublinhado("VER MISTÉRIO"),
+                    Text(
+                      "Tempo Restante: ",
+                      style: textStyle,
+                    ),
+                    Countdown(
+                      seconds: 590,
+                      build: (_, double time) {
+                        final d = Duration(
+                          seconds: time.toInt(),
+                        );
+
+                        return Text(
+                          "${d.inMinutes.toClockPart()}:${d.inSeconds.toClockPart()}",
+                          style: textStyle,
+                        );
+                      },
+                      onFinished: () => goToGameOver(),
                     ),
                   ],
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 20,
+                ),
+                TextoSublinhado(
+                  "PERSONAGEM",
+                  style: titleStyle,
+                ),
+                showDica(dicasPersonagem, dicaViewWidth),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextoSublinhado(
+                  "OBJETO",
+                  style: titleStyle,
+                ),
+                showDica(dicasObjeto, dicaViewWidth),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextoSublinhado(
+                  "LOCAL",
+                  style: titleStyle,
+                ),
+                showDica(dicasLocal, dicaViewWidth),
+                const SizedBox(
+                  height: 20,
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                SizedBox(
+                  width: double.maxFinite,
+                  child: Column(
+                    children: [
+                      Botao(
+                        onPress: () => Navigator.pushNamed(
+                          context,
+                          "/mystery",
+                        ),
+                        child: const TextoSublinhado("VER MISTÉRIO"),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

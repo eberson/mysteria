@@ -50,7 +50,7 @@ class _DicaViewState extends State<DicaView> {
           widget.charada.coord,
         );
 
-        if (distancia < 25) {
+        if (distancia < 10) {
           podeColetar = true;
         }
       });
